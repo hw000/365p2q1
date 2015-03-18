@@ -14,13 +14,7 @@ public class LinkList {
 	public boolean isEmpty(){
 		return firstNode==null;
 	}
-	public void insertFirstNode(int freq, int val){
-		length++;
-		Node newNode=new Node(freq, val);
-		
-		newNode.next=firstNode;
-		firstNode = newNode;
-	}
+
 	
 	// returns node that comes before node target
 	public Node getPrevious(Node target){
