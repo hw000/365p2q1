@@ -13,9 +13,6 @@ import javax.swing.JFileChooser;
 public class P2Q1 {
 	public static void main(String[] args) throws IOException {
 		
-
-
-
 		String file = fileChooser();
 		//String file = "src/wav_sample.wav";
 		byte[] arrayOfBytes=getFileInfo(file);
@@ -29,17 +26,19 @@ public class P2Q1 {
 		// use later
 		//int size_of_file=arrayOfBytes.length;
 		
+		
 		// count frequency of symbols
 		for(int i =0; i<arrayOfBytes.length;i++){
 			frequency[arrayOfBytes[i]&0xff]++;
 
 		}
+		
+		// init linked list
 		LinkList list = new LinkList();
 	
-		// insert initial values in order;
-
+		// insert initial frequencies
 		for(int i = 0;i<frequency.length;i++){
-		//for(int i = 1;i<6;i++){
+		
 			Node tmp = new Node(frequency[i],i);
 			list.insert(tmp);
 		}
@@ -48,8 +47,11 @@ public class P2Q1 {
 		
 		// generate tree
 		while(list.length>1){
+			// remove nodes with lowest frequency
 			Node tmp1 = list.removeFirst();
 			Node tmp2 = list.removeFirst();
+			
+			// create parent with the two nodes as children
 			Node parent = new Node(tmp1,tmp2);
 			list.insert(parent);
 		}
@@ -57,11 +59,7 @@ public class P2Q1 {
 		
 		// remove tree place in variable
 		Node tree = list.removeFirst();
-		tree.display();
-
-		
-		
-		
+		tree.display();	
 	}
 	
 	
@@ -103,8 +101,6 @@ public class P2Q1 {
         return fileBytes;
         
     }
-    
-
-    
+      
 	
 }
