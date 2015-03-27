@@ -61,5 +61,17 @@ public class Node {
 		return right_child;
 	}
 	
+	// tree traversal
+    public static void postOrder(Node n,String s){
+    	if(n!=null){
+    		postOrder(n.getLeft(),s+="0");
+    		s=s.substring(0, s.length()-1);
+    		postOrder(n.getRight(),s+="1");
+    		s=s.substring(0, s.length()-1);
+    		if(n.value!=-1)
+    			System.out.println(n.getVal()+ "	"+s);
+    	}
+    }
+	
 	
 }
