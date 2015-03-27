@@ -11,6 +11,7 @@ import javax.swing.JFileChooser;
 
 
 public class P2Q1 {
+	String[] codes = new String[256];
 	public static void main(String[] args) throws IOException {
 		
 		String file = fileChooser();
@@ -60,6 +61,13 @@ public class P2Q1 {
 		// remove tree place in variable
 		Node tree = list.removeFirst();
 		tree.display();	
+		Node tmp = tree;
+
+		System.out.println(tmp.getLeft().getLeft().getLeft().getRight().getLeft().getVal());
+		
+		
+		System.out.println("------------------post order------------------");
+		Node.postOrder(tree,"");
 	}
 	
 	
@@ -101,6 +109,7 @@ public class P2Q1 {
         return fileBytes;
         
     }
+
       
 	
 }
