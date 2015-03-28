@@ -3,6 +3,7 @@ package p2q1;
 public class Node {
 	private Node left_child, right_child;
 	private int frequency=0;
+	private static int[] codes= new int[256];
 	
 	// value of -1 represents interior node
 	private int value;
@@ -10,6 +11,7 @@ public class Node {
 	
 	// leaf nodes
 	public Node(int frequency, int value){
+		
 		this.frequency=frequency;
 		this.value=value;
 		left_child=null;
@@ -18,6 +20,7 @@ public class Node {
 	
 	// interior nodes
 	public Node(Node left_child, Node right_child){
+	
 		this.left_child=left_child;
 		this.right_child=right_child;
 		this.frequency=right_child.getFreq()+left_child.getFreq();
@@ -60,6 +63,9 @@ public class Node {
 	public Node getRight(){
 		return right_child;
 	}
+	public static int[] getCodes(){
+		return codes;
+	}
 	
 	// tree traversal
     public static void postOrder(Node n,String s){
@@ -68,8 +74,13 @@ public class Node {
     		s=s.substring(0, s.length()-1);
     		postOrder(n.getRight(),s+="1");
     		s=s.substring(0, s.length()-1);
-    		if(n.value!=-1)
-    			System.out.println(n.getVal()+ "	"+s);
+    		//System.out.println(n.value);
+    		if(n.value>=0){
+    			//System.out.println("entered if");
+    			System.out.print(n.getVal()+ "	"+s+"				");
+    			codes[n.getVal()]=Integer.parseInt(s,2);
+    			System.out.println(codes[n.getVal()]);
+    		}
     	}
     }
 	
