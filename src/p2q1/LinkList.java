@@ -36,9 +36,12 @@ public class LinkList {
 		Node tmp;
 		//Node newNode = new Node(freq, val);
 		Node prevNode = getPrevious(insertLoc);
+		
+		// inserting to empty list
 		if(firstNode==null){
 			firstNode=newNode;
 		}
+		// insertLoc is last node
 		else if(insertLoc.next==null&&insertLoc!=firstNode){
 			if (insertLoc.getFreq()>freq){
 				newNode.next=insertLoc;
@@ -47,6 +50,7 @@ public class LinkList {
 				insertLoc.next=newNode;
 			}
 		}
+		// insertLoc is first node
 		else if(insertLoc==firstNode){
 			if(insertLoc.getFreq()>freq){
 				
@@ -57,6 +61,7 @@ public class LinkList {
 				newNode.next=tmp;
 				firstNode.next=newNode;
 			}
+		// inserting anywhere else
 		}else{
 			tmp = insertLoc.next;
 			prevNode.next=newNode;
