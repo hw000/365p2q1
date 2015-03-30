@@ -3,7 +3,8 @@ package p2q1;
 public class Node {
 	private Node left_child, right_child;
 	private int frequency=0;
-	private static int[] codes= new int[256];
+	//private static int[] codes= new int[256];
+	private static String[] codes= new String[256];
 	
 	// value of -1 represents interior node
 	private int value;
@@ -63,7 +64,7 @@ public class Node {
 	public Node getRight(){
 		return right_child;
 	}
-	public static int[] getCodes(){
+	public static String[] getCodes(){
 		return codes;
 	}
 	
@@ -77,9 +78,10 @@ public class Node {
     		//System.out.println(n.value);
     		if(n.value>=0){
     			//System.out.println("entered if");
-    			System.out.print(n.getVal()+ "	"+s+"				");
-    			codes[n.getVal()]=Integer.parseInt(s,2);
-    			System.out.println(codes[n.getVal()]);
+    			//System.out.print(n.getVal()+ "	"+s+"				");
+    			//codes[n.getVal()]=Integer.parseInt(s,2);
+    			codes[n.getVal()]=s;
+    			//System.out.println(codes[n.getVal()]);
     		}
     	}
     }

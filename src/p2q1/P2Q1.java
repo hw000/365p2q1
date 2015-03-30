@@ -13,7 +13,8 @@ import javax.swing.JFileChooser;
 public class P2Q1 {
 	
 	public static void main(String[] args) throws IOException {
-		int[] codes = new int[256];
+		//int[] codes = new int[256];
+		String[] codes = new String[256];
 		String file = fileChooser();
 		//String file = "src/wav_sample.wav";
 		byte[] arrayOfBytes=getFileInfo(file);
@@ -69,8 +70,21 @@ public class P2Q1 {
 		System.out.println("------------------post order------------------");
 		Node.postOrder(tree,"");
 		System.arraycopy(Node.getCodes(), 0, codes, 0, Node.getCodes().length);
-//		for(int i=0;i<256;i++){
-//			System.out.println(i+" : "+codes[i]);
+		
+		
+		for(int i=0;i<256;i++){
+			System.out.println(i+" : "+codes[i]);
+		}
+		
+		String test="";
+		for(int i=0; i<arrayOfBytes.length/1000;i++){
+			test+=codes[arrayOfBytes[i]&0xff];
+		}
+		System.out.println("done");
+		System.out.println(test);
+		
+//		for(int i=0;i<arrayOfBytes.length;i++){
+//			System.out.println(arrayOfBytes[i]);
 //		}
 	}
 	
