@@ -3,6 +3,7 @@ package p2q1;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.swing.JButton;
@@ -64,19 +65,20 @@ public class P2Q1 {
 		// remove tree place in variable
 		Node tree = list.removeFirst();
 		tree.display();	
-		Node tmp = tree;
+		
 
-		System.out.println(tmp.getLeft().getLeft().getLeft().getRight().getLeft().getVal());
 		
 		
-		System.out.println("------------------post order------------------");
+		
+	
 		Node.postOrder(tree,"");
 		System.arraycopy(Node.getCodes(), 0, codes, 0, Node.getCodes().length);
 		
 		
-		for(int i=0;i<256;i++){
-			System.out.println(i+" : "+codes[i]);
-		}
+		// prints codewords
+//		for(int i=0;i<256;i++){
+//			System.out.println(i+" : "+codes[i]);
+//		}
 		
 		
 		// remove later
@@ -87,7 +89,7 @@ public class P2Q1 {
 			//test+=codes[arrayOfBytes[i]&0xff];
 			test=test.concat(codes[arrayOfBytes[i]&0xff]);
 		}
-		System.out.println(test.length());
+		
 
 		
 		byte[] out=new byte[test.length()/8];
@@ -104,17 +106,31 @@ public class P2Q1 {
 			out[i]=tmp_byte;
 		}
 		System.out.println("done");
-		System.out.println(size_of_file);
-		System.out.println(out.length);
-		System.out.println(out[0]&0xff);
+		System.out.println("size of original file: "+size_of_file);
+		System.out.println("size of compressed file: "+out.length);
+		double compressionRatio =(double) size_of_file/out.length;
+		System.out.println("compression ratio: "+compressionRatio);
+		System.out.println("out[0]: "+ (out[0]&0xff));
 		
 		// run time testing
 		long endTime=System.currentTimeMillis();
 		long totalTime=endTime-startTime;
-		System.out.println("time: "+totalTime);
+		System.out.println("run time: "+totalTime+"ms");
+		
+		// write to file
+		writeToFile(out);
 	}
 	
-	
+	// write to file
+	public static void writeToFile(byte[] bytes) throws IOException{
+		FileOutputStream stream = new FileOutputStream("src/compressed");
+		try{
+			stream.write(bytes);
+		} finally{
+			stream.close();
+		}
+
+	}
 	// file chooser
 	public static String fileChooser(){
 		
