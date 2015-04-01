@@ -10,6 +10,8 @@ import javax.swing.JFileChooser;
 
 
 
+
+
 public class P2Q1 {
 	
 	public static void main(String[] args) throws IOException {
@@ -26,7 +28,7 @@ public class P2Q1 {
 		
 		
 		// use later
-		//int size_of_file=arrayOfBytes.length;
+		int size_of_file=arrayOfBytes.length;
 		
 		
 		// count frequency of symbols
@@ -76,16 +78,40 @@ public class P2Q1 {
 			System.out.println(i+" : "+codes[i]);
 		}
 		
+		
+		// remove later
+		// testing time
+		long startTime=System.currentTimeMillis();
 		String test="";
-		for(int i=0; i<arrayOfBytes.length/1000;i++){
-			test+=codes[arrayOfBytes[i]&0xff];
+		for(int i=0; i<arrayOfBytes.length;i++){
+			//test+=codes[arrayOfBytes[i]&0xff];
+			test=test.concat(codes[arrayOfBytes[i]&0xff]);
+		}
+		System.out.println(test.length());
+
+		
+		byte[] out=new byte[test.length()/8];
+		byte tmp_byte;
+		for(int i =0; i<out.length;i++){
+			tmp_byte=0;
+			for(int j=i*8;j<i*8+8;j++){
+				if(test.charAt(j)=='0'){
+					tmp_byte=(byte) (tmp_byte<<1);
+				}else{
+					tmp_byte=(byte) ((tmp_byte<<1)+1);
+				}
+			}
+			out[i]=tmp_byte;
 		}
 		System.out.println("done");
-		System.out.println(test);
+		System.out.println(size_of_file);
+		System.out.println(out.length);
+		System.out.println(out[0]&0xff);
 		
-//		for(int i=0;i<arrayOfBytes.length;i++){
-//			System.out.println(arrayOfBytes[i]);
-//		}
+		// run time testing
+		long endTime=System.currentTimeMillis();
+		long totalTime=endTime-startTime;
+		System.out.println("time: "+totalTime);
 	}
 	
 	
