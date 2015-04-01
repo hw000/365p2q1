@@ -72,6 +72,7 @@ public class P2Q1 {
 		
 	
 		Node.postOrder(tree,"");
+		// copy codewords to array codes
 		System.arraycopy(Node.getCodes(), 0, codes, 0, Node.getCodes().length);
 		
 		
@@ -84,6 +85,8 @@ public class P2Q1 {
 		// remove later
 		// testing time
 		long startTime=System.currentTimeMillis();
+		
+		// write file as giant string
 		String test="";
 		for(int i=0; i<arrayOfBytes.length;i++){
 			//test+=codes[arrayOfBytes[i]&0xff];
@@ -91,23 +94,31 @@ public class P2Q1 {
 		}
 		
 
-		
+		// read giant string char by char
+		// every 8 characters we insert into our byte[]
 		byte[] out=new byte[test.length()/8];
 		byte tmp_byte;
 		for(int i =0; i<out.length;i++){
 			tmp_byte=0;
+			
+			// reads next 8 char and converts it into a byte
 			for(int j=i*8;j<i*8+8;j++){
+				// if 0 shift left
 				if(test.charAt(j)=='0'){
 					tmp_byte=(byte) (tmp_byte<<1);
+				// otherwise shift left and add one
 				}else{
 					tmp_byte=(byte) ((tmp_byte<<1)+1);
 				}
 			}
+			// next 8 bits inserted into array
 			out[i]=tmp_byte;
 		}
 		System.out.println("done");
 		System.out.println("size of original file: "+size_of_file);
 		System.out.println("size of compressed file: "+out.length);
+		
+		// compression ratio
 		double compressionRatio =(double) size_of_file/out.length;
 		System.out.println("compression ratio: "+compressionRatio);
 		System.out.println("out[0]: "+ (out[0]&0xff));
