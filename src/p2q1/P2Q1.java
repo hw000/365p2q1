@@ -14,7 +14,7 @@ import javax.swing.JFileChooser;
 
 
 public class P2Q1 {
-	
+	static LinkList list = new LinkList();
 	public static void main(String[] args) throws IOException {
 		//int[] codes = new int[256];
 		String[] codes = new String[256];
@@ -26,85 +26,69 @@ public class P2Q1 {
 		for(int i =0; i<256;i++){
 			frequency[i]=0;
 		}
-		
-		
-		// use later
+
 		int size_of_file=arrayOfBytes.length;
-		
-		
+			
 		// count frequency of symbols
 		for(int i =0; i<arrayOfBytes.length;i++){
 			frequency[arrayOfBytes[i]&0xff]++;
 
 		}
-		
-		// init linked list
-		LinkList list = new LinkList();
+
 	
 		// insert initial frequencies
-		for(int i = 0;i<frequency.length;i++){
-		
-			Node tmp = new Node(frequency[i],i);
-			list.insert(tmp);
-		}
-		
+		initTree(frequency);
 	
 		
 		// generate tree
-		while(list.length>1){
-			// remove nodes with lowest frequency
-			Node tmp1 = list.removeFirst();
-			Node tmp2 = list.removeFirst();
+		buildTree();
 			
-			// create parent with the two nodes as children
-			Node parent = new Node(tmp1,tmp2);
-			list.insert(parent);
-		}
-		
-		
 		// remove tree place in variable
 		Node tree = list.removeFirst();
-		tree.display();	
+		//tree.display();	
 		
-
-		
-		
-		
+	
 	
 		Node.postOrder(tree,"");
 		// copy codewords to array codes
 		System.arraycopy(Node.getCodes(), 0, codes, 0, Node.getCodes().length);
 		
 		
-		// prints codewords
-//		for(int i=0;i<256;i++){
-//			System.out.println(i+" : "+codes[i]);
-//		}
-		
-		
-		// remove later
-		// testing time
-		long startTime=System.currentTimeMillis();
-		
 		// write file as giant string
-		String test="";
-		for(int i=0; i<arrayOfBytes.length;i++){
-			//test+=codes[arrayOfBytes[i]&0xff];
-			test=test.concat(codes[arrayOfBytes[i]&0xff]);
-		}
+		String s=fileToString(arrayOfBytes,codes);
 		
 
 		// read giant string char by char
 		// every 8 characters we insert into our byte[]
-		byte[] out=new byte[test.length()/8];
+		byte[] out=new byte[s.length()/8];
+		out=toBytes(s);
+
+		System.out.println("done");
+		System.out.println("size of original file: "+size_of_file);
+		System.out.println("size of compressed file: "+out.length);
+		
+		// compression ratio
+		double compressionRatio =(double) size_of_file/out.length;
+		System.out.println("compression ratio: "+compressionRatio);
+
+		
+		// write to file
+		writeToFile(out);
+	}
+	
+	// read giant string char by char
+	// every 8 characters we insert into our byte[]
+	public static byte[] toBytes(String s){
+		byte[] out=new byte[s.length()/8];
 		byte tmp_byte;
+		
 		for(int i =0; i<out.length;i++){
 			tmp_byte=0;
 			
 			// reads next 8 char and converts it into a byte
 			for(int j=i*8;j<i*8+8;j++){
 				// if 0 shift left
-				if(test.charAt(j)=='0'){
+				if(s.charAt(j)=='0'){
 					tmp_byte=(byte) (tmp_byte<<1);
 				// otherwise shift left and add one
 				}else{
@@ -114,24 +98,8 @@ public class P2Q1 {
 			// next 8 bits inserted into array
 			out[i]=tmp_byte;
 		}
-		System.out.println("done");
-		System.out.println("size of original file: "+size_of_file);
-		System.out.println("size of compressed file: "+out.length);
-		
-		// compression ratio
-		double compressionRatio =(double) size_of_file/out.length;
-		System.out.println("compression ratio: "+compressionRatio);
-		System.out.println("out[0]: "+ (out[0]&0xff));
-		
-		// run time testing
-		long endTime=System.currentTimeMillis();
-		long totalTime=endTime-startTime;
-		System.out.println("run time: "+totalTime+"ms");
-		
-		// write to file
-		writeToFile(out);
+		return out;
 	}
-	
 	// write to file
 	public static void writeToFile(byte[] bytes) throws IOException{
 		FileOutputStream stream = new FileOutputStream("src/compressed");
@@ -141,6 +109,34 @@ public class P2Q1 {
 			stream.close();
 		}
 
+	}
+	// file to string
+	public static String fileToString(byte[] arrayOfBytes,String[] codes){
+		String s="";
+		for(int i=0; i<arrayOfBytes.length;i++){
+			s=s.concat(codes[arrayOfBytes[i]&0xff]);
+		}
+		return s;
+	}
+	// generate tree
+	public static void buildTree(){
+		while(list.length>1){
+			// remove nodes with lowest frequency
+			Node tmp1 = list.removeFirst();
+			Node tmp2 = list.removeFirst();
+			
+			// create parent with the two nodes as children
+			Node parent = new Node(tmp1,tmp2);
+			list.insert(parent);
+		}
+	}
+	// initialize tree with nodes
+	public static void initTree(int[] frequency){
+		for(int i = 0;i<frequency.length;i++){
+			
+			Node tmp = new Node(frequency[i],i);
+			list.insert(tmp);
+		}
 	}
 	// file chooser
 	public static String fileChooser(){
